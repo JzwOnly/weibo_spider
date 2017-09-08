@@ -9,8 +9,9 @@
 2. 通过weibo.com    这个更少只有5页
 3. 通过weibo.cn     这个上限是20页，不会再多了
 
-
+<h3>用户信息</h3>
 ![用户信息](https://github.com/JzwOnly/weibo_spider/blob/master/Weibo_spider/img/Infomation.png)
+<h3>微博信息</h3>
 ![微博信息](https://github.com/JzwOnly/weibo_spider/blob/master/Weibo_spider/img/Tweets.png)
 
 所需库
