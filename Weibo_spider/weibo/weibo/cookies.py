@@ -28,10 +28,10 @@ dcap["phantomjs.page.settings.userAgent"] = (
     "Mozilla/5.0 (Linux; U; Android 2.3.6; en-us; Nexus S Build/GRK39F) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"
 )
 """
-    微博账号
+    微博账号,填几个新浪微博账号
 """
 myWeiBo = [
-    {'no': 'jzw@djlchina.com', 'pwd': 'j1314567'},
+    {'no': '账号', 'pwd': '密码'},
 ]
 
 def get_cookie(account, password):

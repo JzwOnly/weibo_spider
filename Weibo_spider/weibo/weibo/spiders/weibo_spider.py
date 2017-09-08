@@ -6,7 +6,7 @@ __author__ = 'jiangziwei'
 
 import requests
 from bs4 import BeautifulSoup
-from Weibo_spider.common import weiboID
+from Weibo_spider.common import weiboID, CURRENT_DEPTH_NUM
 from scrapy.http import Request, FormRequest
 from scrapy.spiders import CrawlSpider
 from Weibo_spider.weibo.weibo.items import InformationItem, TweetsItem, RelationshipsItem, SeedsItem
@@ -54,19 +54,45 @@ def check_uid(uid):
         return False
 
 
+def find_all_seeds(depth):
+    try:
+        clinet = pymongo.MongoClient("localhost", 27017)
+        db = clinet["weibo"]
+        seed = db["Seeds"]
+        result = seed.distinct("uid", {"Depth_num": depth})
+        result = list(result)
+        return result
+    except Exception as e:
+        print("Error", e)
+        return None
+
+
 class Spider(CrawlSpider):
     name = "weibo"
     start_urls = list(set(weiboID))
-
+    depth = CURRENT_DEPTH_NUM
     logging.getLogger("requests").setLevel(logging.WARNING)
 
     def start_requests(self):
-        for uid in self.start_urls:
-            result = check_uid(uid)
-            if result:
-                yield Request(url="https://weibo.cn/{0}/info".format(uid), callback=self.parse_information)
+        if self.depth > 1:
+            seeds = find_all_seeds(self.depth)
+            if seeds is not None:
+                for uid in seeds:
+                    result = check_uid(uid)
+                    if result:
+                        yield Request(url="https://weibo.cn/{0}/info".format(uid), callback=self.parse_information)
+                    else:
+                        logging.warning("uid: {0}  该用户已经抓取过".format(uid))
             else:
-                logging.warning("uid: {0}  该用户已经抓取过".format(uid))
+                logging.warning("当前层数没有种子用户")
+        else:
+            for uid in self.start_urls:
+                result = check_uid(uid)
+                if result:
+                    yield Request(url="https://weibo.cn/{0}/info".format(uid), callback=self.parse_information)
+                else:
+                    logging.warning("uid: {0}  该用户已经抓取过".format(uid))
+        self.depth += 1
 
     def parse_information(self, response):
         informationItem = InformationItem()
@@ -244,7 +270,7 @@ class Spider(CrawlSpider):
             relationshipsItem["R_uids"] = uid_list
             relationshipsItem["Type"] = re_type
 
-            seedsItem["Depth_num"] = 2
+            seedsItem["Depth_num"] = self.depth + 1
             seedsItem["Uids"] = uid_list
 
             yield relationshipsItem
