@@ -15,12 +15,12 @@
 
 使用:
     所需库：
-        1 selenium
-        2 requests
-        3 bs4
-        4 scrapy
-        5 mongoDB
-        6 redis
+        1. selenium
+        2. requests
+        3. bs4
+        4. scrapy
+        5. mongoDB
+        6. redis
 
     需要修改的地方:
     1 在cookies.py 文件里添加新浪微博账号
