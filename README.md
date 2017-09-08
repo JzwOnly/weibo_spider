@@ -5,9 +5,9 @@
 通过一批种子用户，抓取用户信息，所有微博，粉丝和关注
 关于粉丝抓取，由于微博的限制，也不知道说明原因，无法抓取全部粉丝。
 在我编写代码时是这么个情况
-1 通过m.weibo.cn   可以抓取用户前250页的粉丝
-2 通过weibo.com    这个更少只有5页
-3 通过weibo.cn     这个上限是20页，不会再多了
+1. 通过m.weibo.cn   可以抓取用户前250页的粉丝
+2. 通过weibo.com    这个更少只有5页
+3. 通过weibo.cn     这个上限是20页，不会再多了
 
 
 ![用户信息](https://github.com/JzwOnly/weibo_spider/blob/master/Weibo_spider/img/Infomation.png)
