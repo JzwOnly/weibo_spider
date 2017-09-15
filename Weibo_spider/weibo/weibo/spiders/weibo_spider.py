@@ -47,7 +47,7 @@ def check_uid(uid):
     clinet = pymongo.MongoClient("localhost", 27017)
     db = clinet["weibo"]
     information = db["Information"]
-    result = list(information.find({'_id': uid}))
+    result = list(information.find({'_id': "{0}".format(uid)}))
     if len(result) == 0:
         return True
     else:
@@ -77,6 +77,7 @@ class Spider(CrawlSpider):
         if self.depth > 1:
             seeds = find_all_seeds(self.depth)
             if seeds is not None:
+                seeds = list(set(seeds))
                 for uid in seeds:
                     result = check_uid(uid)
                     if result:
@@ -92,8 +93,7 @@ class Spider(CrawlSpider):
                     yield Request(url="https://weibo.cn/{0}/info".format(uid), callback=self.parse_information)
                 else:
                     logging.warning("uid: {0}  该用户已经抓取过".format(uid))
-        self.depth += 1
-
+                    
     def parse_information(self, response):
         informationItem = InformationItem()
         html = BeautifulSoup(response.body, "lxml")
