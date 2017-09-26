@@ -336,10 +336,10 @@ class Spider(CrawlSpider):
         if current_page == 1:
             max_pages = html.find('div', {'id': 'pagelist'})
             max_pages = max_pages.find('input', {'name': 'mp'}) if max_pages is not None else None
-            max_pages = max_pages["value"] if max_pages is not None else 0
+            max_pages = max_pages["value"] if max_pages is not None else 1
             max_pages = int(max_pages)
             logging.warning('=========uid:{0}的微博总共有{1}页'.format(uid, max_pages))
-            if max_pages > 0:
+            if max_pages > 1:
                 meta = response.meta
                 meta['current_page'] = current_page + 1
                 meta['max_pages'] = max_pages
